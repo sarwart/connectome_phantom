@@ -1,0 +1,56 @@
+function [wm,dwi]=track2dwi(dwi,tracks,dim,g,b,L1,L2)
+
+
+wm=zeros(dim);
+
+s = struct('v', zeros(3,1),'s',0);
+dense = repmat(s, size(wm)); 
+
+%read the streamlines and generate signal
+dense={};
+
+for i=1:length(tracks)
+    
+   
+    streamline=tracks{i};
+    coord=abs(ceil(tracks{i}));
+    
+    
+    for j=1:length(coord)-1
+        u=streamline(j+1,:)-streamline(j,:);
+        v=u/norm(u);
+        if ~isempty(dense(coord(j,1),coord(j,2),coord(j,3)).s)
+        dense(coord(j,1),coord(j,2),coord(j,3)).v(1,:)=v;
+        dense(coord(j,1),coord(j,2),coord(j,3)).s(1)=1;
+        else
+            count=1;
+            while count<=length(dense(coord(j,1),coord(j,2),coord(j,3)).s)
+            temp_v=dense(coord(j,1),coord(j,2),coord(j,3)).v(count,:);
+            CosTheta = max(min(dot(u,v)/(norm(u)*norm(v)),1),-1);
+            theta = real(acosd(CosTheta));
+            
+            if theta<=10
+                dense(coord(j,1),coord(j,2),coord(j,3)).s(count)=dense(coord(j,1),coord(j,2),coord(j,3)).s(count)+1;
+            else
+                [dense(coord(j,1),coord(j,2),coord(j,3)).s(count)=dense(coord(j,1),coord(j,2),coord(j,3)).v=[dense(coord(j,1),coord(j,2),coord(j,3)).s(count)=dense(coord(j,1),coord(j,2),coord(j,3)).v;v];
+            end
+        end
+        
+        D=v'*v*(L1-L2)+eye(3)*L2; 
+        s=exp(diag(-b.*(g'*D*g))); 
+    
+        if [coord(j,1),coord(j,2),coord(j,3)]<=dim & [coord(j,1),coord(j,2),coord(j,3)]>=[1,1,1]
+
+        dwi(coord(j,1),coord(j,2),coord(j,3),:)=squeeze(dwi(coord(j,1),coord(j,2),coord(j,3),:))+ s;
+        wm(coord(j,1),coord(j,2),coord(j,3))=wm(coord(j,1),coord(j,2),coord(j,3))+1;
+        
+        end
+
+    end
+
+end
+div=wm;
+div(find(div==0))=1;
+dwi=dwi./div;
+
+wm(find(wm))=1;
