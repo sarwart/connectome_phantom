@@ -139,6 +139,7 @@ for C=1:size(Clus_init,1)
 end
 
 dense=sum(dense,4);
+dense(find(dense==0))=1;
 dwi=dwi./dense;
 tdense=max(max(max(dense)));
 dwi=dwi.*(dense/tdense);
