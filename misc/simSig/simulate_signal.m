@@ -1,4 +1,4 @@
-function dwi=simulate_signal_new_changed(dwi,wm,gm,csf,prm)
+function dwi=simulate_signal(dwi,wm,gm,csf,prm)
 
 b=prm.b; %b-value
 
