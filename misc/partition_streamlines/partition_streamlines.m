@@ -1,4 +1,4 @@
-function [new_clus,Clus_init,new_CM, CM, clusters]=partition_streamlines(streamlines,base_atlas,st_thresh,wm, auto, density)
+function [new_clus,Clus_init,new_CM, CM, clusters]=partition_streamlines(streamlines,base_atlas,st_thresh,wm, auto, density,vss)
 
 
 
@@ -55,9 +55,9 @@ step=norm_ratio(i);
 
 
 ngh=[];
-for k=-step:step
-    for l=-step:step
-        for m=-step:step
+for k=-step:vss:step
+    for l=-step:vss:step
+        for m=-step:vss:step
         
         if ~(k==0 && l==0 && m==0)
                 ngh=[ngh;[k,l,m]]; 
