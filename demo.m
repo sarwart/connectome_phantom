@@ -119,7 +119,7 @@ header.n_properties=0;
 
 %%%%%%%%%%%%%%%%%%%%%%% Extract streamlines for each connection %%%%%%%%%%%%%%%%%%%%%%%
 
-[new_clus,Clus_init,new_CM, CM, org_clus]=partition_streamlines(streamlines,atlas,st_thresh,boundry_mask, auto, density);
+[new_clus,Clus_init,new_CM, CM, org_clus]=partition_streamlines(streamlines,atlas,st_thresh,boundry_mask, auto, density,1); %step-size of 1 used for reducing the computational time
 
 
 
