@@ -82,8 +82,8 @@ parameters.fu_csf=0.35; % volume fraction for CSF
 density=[2, 6]; %controlling the fiber density in voxels
 
 
-auto=0; % if 0 then use manual threshold, if 1 then ut will threshold 5% weak connections
-st_thresh=1; %threshold for connecting streamlines (if automated threshold is not used)
+auto=0; % if 0 then use manual threshold, if 1 then it will threshold 5% weak connections
+st_thresh=5; %threshold for connecting streamlines (if automated threshold is not used)
 
 %for signal simulation
 [r,c,z]=size(atlas);
@@ -117,6 +117,7 @@ header.n_properties=0;
 %}
 
 
+disp('Extracting and processing the streamlines from the provided tractogram');
 %%%%%%%%%%%%%%%%%%%%%%% Extract streamlines for each connection %%%%%%%%%%%%%%%%%%%%%%%
 
 [new_clus,Clus_init,new_CM, CM, org_clus]=partition_streamlines(streamlines,atlas,st_thresh,boundry_mask, auto, density,1); %step-size of 1 used for reducing the computational time
